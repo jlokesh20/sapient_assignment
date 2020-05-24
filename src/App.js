@@ -179,9 +179,9 @@ function App() {
             <thead className="table-head">
               <tr className="table-row">
                   <th>Comments</th>
-                  <th>Vote count</th>
-                  <th>Upvote</th>
-                  <th className="col-1">New details</th>
+                  <th>Vote Count</th>
+                  <th>UpVote</th>
+                  <th className="col-1">News details</th>
                 </tr>
             </thead>
             <tbody>
