@@ -17,7 +17,7 @@ function App() {
   const isFirstRun = useRef(true);
 
   const chartData = [];
-  const baseUrl = 'http://hn.algolia.com/api/v1/search?tags=front_page';
+  const baseUrl = 'https://hn.algolia.com/api/v1/search?tags=front_page';
 
 
   /*
