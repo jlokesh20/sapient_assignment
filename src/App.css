@@ -1,0 +1,130 @@
+.App {
+  margin: 2% 8%;
+  font-size: 12px;
+}
+
+body a {
+  color: inherit;
+}
+
+body a:hover {
+  color: #949494;
+  text-decoration: none;
+}
+
+.upvote-column {
+  position: relative;
+}
+.title-column {
+  font-weight: bold;
+}
+.title-column .subtext{
+  color: #828282;
+  font-size: 11px;
+  padding-left: 10px;
+}
+.subtext .subtext_highlight {
+  color: black
+}
+.hide {
+  cursor: pointer;
+}
+.arrow-up {
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-bottom: 10px solid gray;
+  cursor: pointer;
+  position: absolute;
+  top: 20px;
+  left: 28px;
+}
+.tooltiptext {
+  visibility: hidden;
+  width: 100px;
+  color: black;
+  background-color: white;
+  text-align: center;
+  padding: 5px 0;
+  border: 1px solid black;
+  /* Position the tooltip */
+  position: absolute;
+  left: 50px;
+  top: 30px;
+  z-index: 1;
+}
+.arrow-up:hover {
+  border-bottom: 10px solid lightcoral;
+}
+.arrow-up:hover + .tooltiptext {
+  visibility: visible;
+}
+.table-container {
+  background-color: #F6F6EF;
+  border: 1px solid transparent;
+  padding: 0 2px;
+}
+.table-head {
+  background-color: darkorange;
+  color: white;
+}
+.table-container .table-responsive {
+  overflow-x: initial;
+}
+
+
+.chart-container {
+  background-color: #F6F6EF;
+  border-width: 2px 1px;
+  border-color: orangered transparent;
+  border-style: solid;
+  height:300px;
+  margin-top: 5px;
+  padding: 20px 0;
+  width: 1280px;
+}
+.pagination-container {
+  display: flex;
+  justify-content: flex-end;
+  padding-bottom: 10px;
+}
+
+.pagination-container span {
+ padding: 0 5px;
+ color: orangered;
+ cursor: pointer;
+ font-weight: bold;
+}
+
+.pagination-container span:hover {
+  color: orange;
+}
+
+.pagination-container span:not(:last-child) {
+  border-right: 2px solid orangered;
+}
+
+/* below css styles are for mobile devices : */
+
+@media only screen and (max-width: 675px) {
+  .App {
+    margin: 2%;
+    font-size: 11px;;
+  }
+  .title-column .subtext{
+    font-size: 9px;
+    padding-left: 0;
+  }
+  .subtext::before {
+    content: "\A";
+    white-space: pre;
+  }
+  .table-container .table-responsive {
+    overflow-x: auto;
+  }
+  .chart-container {
+    width: 360px;
+    height:350px;
+  }
+}

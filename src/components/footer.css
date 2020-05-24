@@ -1,0 +1,29 @@
+.footer-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-top: 100px;
+    padding: 20px;
+    border: 1px solid lightgray;
+    background-color: white;
+    box-shadow: 1px 2px whitesmoke;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.footer_username {
+    color: lightslategray;
+    font-size: 14px;
+}
+
+.footer_linkedin {
+    color: lightblue;
+    font-size: 12px;
+}
+.footer_linkedin a {
+    cursor: pointer;
+    color: lightskyblue;
+}
+.footer_copyright {
+    font-size: 11px;
+    color: lightslategray;
+}
