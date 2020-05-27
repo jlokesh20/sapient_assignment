@@ -41,11 +41,18 @@ function App() {
         let hitsData = searchData.data.hits;
         if(Array.isArray(hitsData) && hitsData.length > 0) {
           for(let i=0; i<hitsData.length; i++){
+            hitsData[i].hidden = false;
             let objId = hitsData[i].objectID;
-            if(upvoteMap && upvoteMap[objId] && hitsData[i].points < upvoteMap[objId]){
-              hitsData[i].points = upvoteMap[objId];
+            if(upvoteMap && upvoteMap[objId]){
+              if(hitsData[i].points < upvoteMap[objId].upvotes){
+                hitsData[i].points = upvoteMap[objId].upvotes;
+              }
+              if(upvoteMap[objId].hidden) {
+                hitsData[i].hidden = true;
+              }
             }
           }
+          console.log('hitsData', hitsData);
           setNewsState({newsData: hitsData});
         }
       })
@@ -72,7 +79,21 @@ function App() {
     fetchNewsData(pageNoState)
     .then((searchData) => {
       let hitsData = searchData.data.hits;
-      setNewsState({newsData: hitsData});
+      let upvoteMap = JSON.parse(localStorage.getItem('upVoteMap'));
+      if(Array.isArray(hitsData) && hitsData.length > 0) {
+        for(let i=0; i<hitsData.length; i++){
+          let objId = hitsData[i].objectID;
+          if(upvoteMap && upvoteMap[objId]){
+            if(hitsData[i].points < upvoteMap[objId].upvotes){
+              hitsData[i].points = upvoteMap[objId].upvotes;
+            }
+            if(upvoteMap[objId].hidden) {
+              hitsData[i].hidden = true;
+            }
+          }
+        }
+        setNewsState({newsData: hitsData});
+      }
     });
   },[pageNoState]);
 
@@ -81,9 +102,11 @@ function App() {
     This method creates a map of Object id and upvotes and saves it to local storage
   */
   const setUpvoteMap = (dataArr) => {
-    let upvoteMap = {};
+    let upvoteMap = JSON.parse(localStorage.getItem('upVoteMap')) || {};
     for(let i=0;i<dataArr.length; i++) {
-      upvoteMap[dataArr[i].objectID] = dataArr[i].points;
+      upvoteMap[dataArr[i].objectID] = {};
+      upvoteMap[dataArr[i].objectID].upvotes = dataArr[i].points;
+      upvoteMap[dataArr[i].objectID].hidden = dataArr[i].hidden;
     }
     //console.log('upvote map is',upvoteMap);
     localStorage.setItem('upVoteMap', JSON.stringify(upvoteMap));
@@ -119,9 +142,10 @@ function App() {
   */
   const hideNews = (objId) => {
     let origData = [...newsState.newsData];
-    origData = origData.filter((data) => {
-      return data.objectID !== objId;
+    let objIndex = origData.findIndex((data) => {
+      return data.objectID === objId;
     })
+    origData[objIndex].hidden = true;
     setNewsState({newsData : origData});
   }
 
@@ -141,22 +165,26 @@ function App() {
   let dataRows = null;
   if(Array.isArray(newsState.newsData) && newsState.newsData.length > 0) {
     dataRows = newsState.newsData.map(data => {
-      return (
-        <tr className="table-row" key={data.objectID}>
-          <td>{data.num_comments}</td>
-          <td>{data.points}</td>
-          <td className="upvote-column">
-            <i onClick = {() => addUpvote(data.objectID)} className="arrow-up"></i>
-            <span className="tooltiptext">Upvote</span>
-          </td>
-          <td className="title-column">
-            <span><a href={data.url} target="_blank" rel="noopener noreferrer">{data.title}</a></span>
-            <span className="subtext">({getNewsDomain(data.url)})</span>
-            <span className="subtext">by <span className="subtext_highlight">{data.author}</span> </span>
-            <span className="subtext"><span onClick={() => hideNews(data.objectID)} className="subtext_highlight hide">[ hide ]</span></span>
-          </td>
-        </tr>
-      )
+      if(!data.hidden){
+        return (
+          <tr className="table-row" key={data.objectID}>
+            <td>{data.num_comments}</td>
+            <td>{data.points}</td>
+            <td className="upvote-column">
+              <i onClick = {() => addUpvote(data.objectID)} className="arrow-up"></i>
+              <span className="tooltiptext">Upvote</span>
+            </td>
+            <td className="title-column">
+              <span><a href={data.url} target="_blank" rel="noopener noreferrer">{data.title}</a></span>
+              <span className="subtext">({getNewsDomain(data.url)})</span>
+              <span className="subtext">by <span className="subtext_highlight">{data.author}</span> </span>
+              <span className="subtext"><span onClick={() => hideNews(data.objectID)} className="subtext_highlight hide">[ hide ]</span></span>
+            </td>
+          </tr>
+        )
+      } else {
+        return null;
+      }
     })
   }
 
