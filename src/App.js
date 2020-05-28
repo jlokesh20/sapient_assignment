@@ -39,7 +39,7 @@ function App() {
       .then((searchData) => {
         let upvoteMap = JSON.parse(localStorage.getItem('upVoteMap'));
         let hitsData = searchData.data.hits;
-        if(Array.isArray(hitsData) && hitsData.length > 0) {
+        if(Array.isArray(hitsData)) {
           for(let i=0; i<hitsData.length; i++){
             hitsData[i].hidden = false;
             let objId = hitsData[i].objectID;
@@ -80,7 +80,7 @@ function App() {
     .then((searchData) => {
       let hitsData = searchData.data.hits;
       let upvoteMap = JSON.parse(localStorage.getItem('upVoteMap'));
-      if(Array.isArray(hitsData) && hitsData.length > 0) {
+      if(Array.isArray(hitsData)) {
         for(let i=0; i<hitsData.length; i++){
           let objId = hitsData[i].objectID;
           if(upvoteMap && upvoteMap[objId]){
